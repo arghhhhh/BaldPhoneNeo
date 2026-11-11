@@ -71,4 +71,6 @@
 
     <!-- Home screen notification dot (dp, so it ignores font scaling) -->
     <dimen name="notification_badge_size">16dp</dimen>
+    <!-- Apps grid label box (dp, so long names shrink to one line instead of wrapping mid-word) -->
+    <dimen name="app_grid_label_height">44dp</dimen>
 </resources>

@@ -52,7 +52,8 @@ fun Context.showRenameDialog(
         }
     }
 
-    dialog.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
+    // The keyboard is not opened automatically: with large system fonts it would cover the
+    // "Original name" button. Tapping the text field opens it.
+    dialog.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
     dialog.show()
-    editText.requestFocus()
 }

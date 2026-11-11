@@ -3,7 +3,7 @@
   Grid cell for the Apps screen (original BaldPhone style), used when Prefs.isAppsGridLayout is on.
   View IDs match app_list_item.xml so AppsListAdapter / AppsActivity can treat both the same.
   The icon takes the full cell width (square) and the cell grows downward for the label,
-  so large system font sizes make the cell taller instead of shrinking the icon.
+  and the label is one auto-sized line, so large font sizes neither shrink the icon nor wrap mid-word.
 -->
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -48,12 +48,16 @@
         android:id="@+id/app_name"
         style="@style/BackgroundText.Medium.Plus"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/app_grid_label_height"
         android:layout_marginTop="6dp"
+        android:autoSizeMaxTextSize="@dimen/medium_plus"
+        android:autoSizeMinTextSize="10sp"
+        android:autoSizeStepGranularity="1sp"
+        android:autoSizeTextType="uniform"
         android:ellipsize="end"
         android:fontFamily="sans-serif"
-        android:gravity="center_horizontal"
-        android:maxLines="2"
+        android:gravity="center"
+        android:maxLines="1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/app_icon"
