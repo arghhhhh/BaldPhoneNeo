@@ -20,26 +20,19 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:src="@android:drawable/ic_menu_help" />
 
-    <!-- Notification Badge -->
-    <TextView
+    <!-- Notification Badge: a plain dot. Sized in dp (not sp) and without text so it
+         stays a perfect circle regardless of the system font size. -->
+    <View
         android:id="@+id/tv_notification_badge"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/notification_badge_size"
+        android:layout_height="@dimen/notification_badge_size"
         android:layout_marginEnd="5dp"
         android:layout_marginTop="5dp"
         android:background="@drawable/bg_notification_badge"
-        android:gravity="center"
-        android:minWidth="17dp"
-        android:minHeight="17dp"
-        android:paddingHorizontal="4dp"
-        android:textColor="@android:color/white"
-        android:textSize="12sp"
+        android:importantForAccessibility="no"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0"
-        tools:text="9+"
         tools:visibility="visible" />
 
     <!-- App Label -->

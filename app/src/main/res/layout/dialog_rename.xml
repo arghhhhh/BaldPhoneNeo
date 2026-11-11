@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?><!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- Text field shown inside a BaldDialog when renaming an app or a home screen tile. -->
+<com.google.android.material.textfield.TextInputLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/til_rename"
+    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="16dp"
+    android:layout_marginTop="8dp"
+    android:hint="@string/rename_hint">
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/et_rename"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:imeOptions="actionDone"
+        android:importantForAutofill="no"
+        android:inputType="textCapWords"
+        android:maxLength="30"
+        android:maxLines="1"
+        android:minHeight="56dp"
+        android:textSize="18sp" />
+
+</com.google.android.material.textfield.TextInputLayout>

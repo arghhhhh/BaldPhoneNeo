@@ -9,12 +9,16 @@ import android.view.ViewGroup
 
 import androidx.annotation.AttrRes
 import androidx.core.content.ContextCompat
+import android.widget.ImageView
+import android.widget.TextView
+
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 
 import app.baldphone.neo.R
 import app.baldphone.neo.core.assisttouch.enableAssistTouch
+import app.baldphone.neo.databinding.AppGridItemBinding
 import app.baldphone.neo.databinding.AppListItemBinding
 import app.baldphone.neo.databinding.ItemListHeaderBinding
 import app.baldphone.neo.extensions.setClickableAccessibilityRole
@@ -30,7 +34,9 @@ import com.bald.uriah.baldphone.adapters.ModularListAdapter
  */
 class AppsListAdapter(
     private val onAppClick: (item: AppEntry) -> Unit,
-    private val onAppLongClick: ((anchor: View, item: AppEntry) -> Unit)? = null
+    private val onAppLongClick: ((anchor: View, item: AppEntry) -> Unit)? = null,
+    /** Grid of large icons (original BaldPhone style) instead of rows. */
+    private val gridMode: Boolean = false
 ) : ModularListAdapter<AppListItem, RecyclerView.ViewHolder>(AppListItemDiffCallback) {
     private var selectedPosition = RecyclerView.NO_POSITION
     private var themeColors: ThemeColors? = null
@@ -61,7 +67,13 @@ class AppsListAdapter(
         return if (viewType == TYPE_HEADER) {
             HeaderViewHolder(ItemListHeaderBinding.inflate(inflater, parent, false))
         } else {
-            AppViewHolder(AppListItemBinding.inflate(inflater, parent, false))
+            if (gridMode) {
+                val b = AppGridItemBinding.inflate(inflater, parent, false)
+                AppViewHolder(b.root, b.appIcon, b.appName, b.pin)
+            } else {
+                val b = AppListItemBinding.inflate(inflater, parent, false)
+                AppViewHolder(b.root, b.appIcon, b.appName, b.pin)
+            }
         }
     }
 
@@ -86,14 +98,19 @@ class AppsListAdapter(
         }
     }
 
-    inner class AppViewHolder(private val binding: AppListItemBinding) : RecyclerView.ViewHolder(binding.root) {
-        private val colors = getThemeColors(binding.root.context)
-        private val defaultBackground = binding.root.background
+    inner class AppViewHolder(
+        private val root: View,
+        private val appIcon: ImageView,
+        private val appName: TextView,
+        private val pin: View
+    ) : RecyclerView.ViewHolder(root) {
+        private val colors = getThemeColors(root.context)
+        private val defaultBackground = root.background
 
         init {
-            binding.root.setClickableAccessibilityRole()
-            binding.root.enableAssistTouch()
-            binding.root.setOnClickListener {
+            root.setClickableAccessibilityRole()
+            root.enableAssistTouch()
+            root.setOnClickListener {
                 val pos = bindingAdapterPosition
                 if (pos != RecyclerView.NO_POSITION) {
                     val item = getItem(pos) as? AppListItem.App ?: return@setOnClickListener
@@ -103,7 +120,7 @@ class AppsListAdapter(
 
             // In choose mode items won't show selection/haptic feedback on long-press.
             if (onAppLongClick != null) {
-                binding.root.setOnLongClickListener { anchor ->
+                root.setOnLongClickListener { anchor ->
                     val pos = bindingAdapterPosition
                     if (pos == RecyclerView.NO_POSITION) return@setOnLongClickListener false
                     val item = getItem(pos) as? AppListItem.App ?: return@setOnLongClickListener false
@@ -120,15 +137,15 @@ class AppsListAdapter(
         }
 
         fun bind(app: AppEntry, isSelected: Boolean) {
-            binding.appName.text = app.label
-            AppIconBinder.loadPic(app, binding.appIcon)
-            binding.pin.isVisible = app.isPinned
+            appName.text = app.label
+            AppIconBinder.loadPic(app, appIcon)
+            pin.isVisible = app.isPinned
             updateSelectionState(isSelected)
         }
 
         fun updateSelectionState(isSelected: Boolean) {
-            binding.root.background = if (isSelected) colors.selectedDrawable else defaultBackground
-            binding.appName.setTextColor(if (isSelected) colors.selectedText else colors.defaultText)
+            root.background = if (isSelected) colors.selectedDrawable else defaultBackground
+            appName.setTextColor(if (isSelected) colors.selectedText else colors.defaultText)
         }
     }
 

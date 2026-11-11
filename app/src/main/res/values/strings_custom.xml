@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Strings added by this fork. Kept in a separate file so upstream merges of strings.xml stay clean. -->
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+    <!-- Renaming apps / home tiles -->
+    <string name="rename">Rename</string>
+    <string name="rename_hint">New name</string>
+    <string name="rename_reset">Original name</string>
+
+    <!-- Home settings -->
+    <string name="settings_home_four_rows_title">Fourth row of buttons</string>
+    <string name="settings_home_four_rows_desc_on">The main page shows four rows (Pills, Apps, Alarms added). Each button can be changed in the home screen editor.</string>
+    <string name="settings_home_four_rows_desc_off">The main page shows three rows of buttons.</string>
+    <string name="settings_apps_grid_title">Show apps as a grid</string>
+    <string name="settings_apps_grid_desc_on">The Apps screen shows large icons in a grid.</string>
+    <string name="settings_apps_grid_desc_off">The Apps screen shows a list.</string>
+
+    <!-- Accessibility service description (fork adds Gemini Live auto-start) -->
+    <string name="accessibility_service_description_fork">Lets the Lock Screen button lock the phone with one tap, and lets the Assistant button start a Gemini Live voice chat directly. It only looks at the Google app, and only right after you press Assistant.</string>
+</resources>

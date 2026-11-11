@@ -16,6 +16,7 @@ import android.view.accessibility.AccessibilityEvent
 import androidx.annotation.RequiresApi
 
 import app.baldphone.neo.permissions.model.SpecialPermission
+import app.baldphone.neo.utils.GeminiLive
 
 enum class DeviceLockResult {
     SUCCESS,
@@ -114,8 +115,28 @@ object DeviceLock {
             return START_NOT_STICKY
         }
 
+        override fun onServiceConnected() {
+            super.onServiceConnected()
+            // Re-apply the event filter in code as well: some devices keep a stale copy of
+            // the XML config after an app update until the service is toggled.
+            serviceInfo = serviceInfo?.apply {
+                eventTypes = AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED or
+                    AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED
+                packageNames = arrayOf("com.google.android.googlequicksearchbox")
+                notificationTimeout = 100
+            }
+            Log.i(TAG, "LockService connected: capabilities=${serviceInfo?.capabilities} info=$serviceInfo")
+            GeminiLive.service = java.lang.ref.WeakReference(this)
+        }
+
+        override fun onUnbind(intent: Intent?): Boolean {
+            GeminiLive.service = null
+            return super.onUnbind(intent)
+        }
+
         override fun onAccessibilityEvent(event: AccessibilityEvent?) {
-            // No-op
+            // Only events from the Google app arrive here (packageNames in the service config).
+            GeminiLive.onAccessibilityEvent(this, event)
         }
 
         override fun onInterrupt() {

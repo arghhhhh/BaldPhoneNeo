@@ -25,15 +25,46 @@ import app.baldphone.neo.ui.dialogs.BaldSnackbar
 
 private const val TAG = "IntentUtils"
 
+/** Package name of the Google Gemini app. */
+private const val GEMINI_PACKAGE = "com.google.android.apps.bard"
+
+/** Intent.ACTION_VOICE_ASSIST is hidden from the public SDK; the action string is stable. */
+private const val ACTION_VOICE_ASSIST = "android.intent.action.VOICE_ASSIST"
+
+/** Package of the Google app, which hosts Gemini on Android. */
+private const val GOOGLE_APP_PACKAGE = "com.google.android.googlequicksearchbox"
+
 /**
- * Launches the system voice assistant (ACTION_VOICE_COMMAND).
+ * Launches the assistant. Tries, in order:
+ *  1. Gemini Live (hands-free voice chat) via its launcher shortcut - see [GeminiLive].
+ *  2. The Gemini app (opens a Gemini chat screen).
+ *  3. ACTION_ASSIST aimed at the Google app (generic ACTION_ASSIST may show an app chooser
+ *     when browsers also claim it).
+ *  4. VOICE_ASSIST / VOICE_COMMAND - on current phones these open the old Google voice
+ *     search rather than Gemini, so they are last resorts for phones without Gemini.
  */
 fun Context.launchAssistant() {
-    startActivitySafe(
-        intent = Intent(Intent.ACTION_VOICE_COMMAND),
-        flags = FLAG_ACTIVITY_NEW_TASK,
-        errorMsgRes = R.string.your_phone_doesnt_have_assistant_installed
-    )
+    if (GeminiLive.start(this)) return
+
+    val candidates =
+        listOfNotNull(
+            packageManager.getLaunchIntentForPackage(GEMINI_PACKAGE),
+            Intent(Intent.ACTION_ASSIST).setPackage(GOOGLE_APP_PACKAGE),
+            Intent(ACTION_VOICE_ASSIST),
+            Intent(Intent.ACTION_VOICE_COMMAND)
+        )
+
+    for (intent in candidates) {
+        try {
+            startActivity(intent.addFlags(FLAG_ACTIVITY_NEW_TASK))
+            return
+        } catch (e: ActivityNotFoundException) {
+            Log.w(TAG, "Assistant intent not handled: $intent", e)
+        } catch (e: SecurityException) {
+            Log.w(TAG, "Assistant intent not permitted: $intent", e)
+        }
+    }
+    BaldSnackbar.show(this, R.string.your_phone_doesnt_have_assistant_installed, BaldSnackbar.TYPE_ERROR)
 }
 
 fun Context.openCamera() {

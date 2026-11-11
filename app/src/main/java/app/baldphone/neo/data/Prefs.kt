@@ -204,6 +204,35 @@ object Prefs {
     fun isCustomized(slot: HomeSlot): Boolean = storage.contains(slot.key)
 
     /**
+     * Returns the user-defined label for the given home [slot], or null to use the default.
+     */
+    fun getSlotLabel(slot: HomeSlot): String? =
+        storage.getString(PrefKeys.KEY_HOME_SLOT_LABEL_PREFIX + slot.key, null)
+
+    /**
+     * Sets or (with a null/blank [label]) removes the user-defined label for the given home [slot].
+     */
+    fun setSlotLabel(slot: HomeSlot, label: String?) {
+        val key = PrefKeys.KEY_HOME_SLOT_LABEL_PREFIX + slot.key
+        storage.edit {
+            if (label.isNullOrBlank()) remove(key) else putString(key, label.trim())
+        }
+    }
+
+    /**
+     * Whether the main home page shows a 4th row of buttons (as in the original BaldPhone).
+     */
+    @JvmStatic
+    var isHomeFourRows: Boolean by booleanPref(PrefKeys.KEY_HOME_FOUR_ROWS, true)
+
+    /**
+     * Whether the Apps screen shows apps as a grid of large icons (original BaldPhone style)
+     * instead of a list.
+     */
+    @JvmStatic
+    var isAppsGridLayout: Boolean by booleanPref(PrefKeys.KEY_APPS_GRID_LAYOUT, true)
+
+    /**
      * Controls whether the notes page is visible on the home screen.
      */
     @JvmStatic

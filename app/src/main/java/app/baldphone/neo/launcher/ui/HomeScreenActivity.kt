@@ -337,13 +337,15 @@ class HomeScreenActivity : BaseActivity() {
     /** Snapshot for detecting background preference changes */
     private data class PrefsSnapshot(
         val accessibilityLevel: Int,
-        val noteVisible: Boolean
+        val noteVisible: Boolean,
+        val fourRows: Boolean
     ) {
         companion object {
             fun capture(): PrefsSnapshot =
                 PrefsSnapshot(
                     accessibilityLevel = Prefs.accessibilityLevel.value,
-                    noteVisible = Prefs.noteVisible
+                    noteVisible = Prefs.noteVisible,
+                    fourRows = Prefs.isHomeFourRows
                 )
         }
     }

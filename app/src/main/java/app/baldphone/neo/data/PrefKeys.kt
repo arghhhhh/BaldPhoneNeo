@@ -55,5 +55,17 @@ object PrefKeys {
     const val KEY_HOME_SLOT_CAMERA = "CUSTOM_CAMERA_KEY"
     const val KEY_HOME_SLOT_LOCK_SCREEN = "CUSTOM_VIDEOS_KEY"
 
+    // Optional 4th row on the main home page (same keys as the original BaldPhone where possible)
+    const val KEY_HOME_SLOT_REMINDERS = "CUSTOM_REMINDERS_KEY"
+    const val KEY_HOME_SLOT_APPS = "CUSTOM_APPS_KEY"
+    const val KEY_HOME_SLOT_CLOCK = "CUSTOM_CLOCK_KEY"
+
+    // Home screen layout
+    const val KEY_HOME_FOUR_ROWS = "pref_home_four_rows"
+    const val KEY_APPS_GRID_LAYOUT = "pref_apps_grid_layout"
+
+    /** Prefix for per-tile label overrides on the main home page, followed by the slot key. */
+    const val KEY_HOME_SLOT_LABEL_PREFIX = "home_slot_label_"
+
     const val KEY_NOTE_VISIBLE = BPrefs.NOTE_VISIBLE_KEY
 }

@@ -11,6 +11,7 @@ import androidx.activity.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
@@ -18,9 +19,12 @@ import kotlinx.coroutines.launch
 
 import app.baldphone.neo.R
 import app.baldphone.neo.activities.BaseActivity
+import app.baldphone.neo.data.Prefs
+import app.baldphone.neo.launcher.apps.data.AppLabels
 import app.baldphone.neo.launcher.apps.data.AppsRepository
 import app.baldphone.neo.launcher.apps.data.db.AppEntry
 import app.baldphone.neo.ui.dialogs.showErrorSnackbar
+import app.baldphone.neo.ui.dialogs.showRenameDialog
 import app.baldphone.neo.ui.menu.showActionMenu
 import app.baldphone.neo.utils.startComponentName
 
@@ -53,13 +57,30 @@ class AppsActivity : BaseActivity() {
     }
 
     private fun setupRecyclerView() {
+        val gridMode = Prefs.isAppsGridLayout
         adapter =
             AppsListAdapter(
                 onAppClick = if (chooseKey == null) ::startComponentName else ::appChosen,
-                onAppLongClick = if (chooseKey == null) ::showDropDown else null
+                onAppLongClick = if (chooseKey == null) ::showDropDown else null,
+                gridMode = gridMode
             )
         recyclerView.adapter = adapter
-        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.layoutManager =
+            if (gridMode) {
+                // Original BaldPhone layout: 3 big icons per row (6 in landscape / wide screens
+                // such as the inner display of a foldable), section headers span the full row.
+                val config = resources.configuration
+                val columns = if (config.screenWidthDp >= WIDE_SCREEN_DP) 6 else 3
+                GridLayoutManager(this, columns).apply {
+                    spanSizeLookup =
+                        object : GridLayoutManager.SpanSizeLookup() {
+                            override fun getSpanSize(position: Int): Int =
+                                if (adapter.getItemViewType(position) == AppsListAdapter.TYPE_HEADER) columns else 1
+                        }
+                }
+            } else {
+                LinearLayoutManager(this)
+            }
     }
 
     private fun observeApps() {
@@ -89,6 +110,18 @@ class AppsActivity : BaseActivity() {
                 labelRes = if (app.isPinned) R.string.remove_shortcut else R.string.add_shortcut
             ) {
                 AppsRepository.updatePinned(app.componentName, app.userId, !app.isPinned)
+            }
+
+            option(
+                iconRes = R.drawable.edit_on_button,
+                labelRes = R.string.rename
+            ) {
+                showRenameDialog(
+                    currentLabel = app.label,
+                    isCustomized = AppLabels.isCustomized(app.componentName)
+                ) { newLabel ->
+                    AppLabels.set(app.componentName, newLabel)
+                }
             }
 
             if (!app.isPredefined) {
@@ -129,5 +162,8 @@ class AppsActivity : BaseActivity() {
         private const val TAG = "AppsActivity"
 
         const val CHOOSE_MODE = "CHOOSE_MODE"
+
+        /** Screen width (dp) from which the grid uses 6 columns instead of 3. */
+        private const val WIDE_SCREEN_DP = 600
     }
 }

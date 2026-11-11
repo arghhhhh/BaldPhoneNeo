@@ -135,8 +135,10 @@
         android:layout_marginEnd="8dp"
         app:__src="@drawable/emergency"
         app:__text="@string/sos"
+        android:layout_marginBottom="6dp"
+        app:layout_goneMarginBottom="0dp"
         app:layout_constraintTop_toBottomOf="@id/bt_camera"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/bt_reminders"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/bt_assistant"
         app:layout_constraintVertical_weight="1.0" />
@@ -163,5 +165,49 @@
         app:layout_constraintBottom_toBottomOf="@id/bt_emergency"
         app:layout_constraintStart_toEndOf="@id/bt_assistant"
         app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Optional fourth row of buttons (Settings > Home > "Four rows"), hidden by default.
+         When GONE the vertical chain collapses back to three rows. -->
+    <com.bald.uriah.baldphone.views.FirstPageAppIcon
+        android:id="@+id/bt_reminders"
+        style="@style/HomeButtonTile.AccentOrange"
+        android:layout_height="0dp"
+        android:layout_marginEnd="8dp"
+        android:visibility="gone"
+        app:__src="@drawable/pill"
+        app:__text="@string/pills"
+        app:layout_constraintTop_toBottomOf="@id/bt_emergency"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/bt_apps"
+        app:layout_constraintVertical_weight="1.0"
+        tools:visibility="visible" />
+
+    <com.bald.uriah.baldphone.views.FirstPageAppIcon
+        android:id="@+id/bt_apps"
+        style="@style/HomeButtonTile.AccentOrange"
+        android:layout_height="0dp"
+        android:layout_marginEnd="8dp"
+        android:visibility="gone"
+        app:__src="@drawable/apps_on_background"
+        app:__text="@string/apps"
+        app:layout_constraintTop_toTopOf="@id/bt_reminders"
+        app:layout_constraintBottom_toBottomOf="@id/bt_reminders"
+        app:layout_constraintStart_toEndOf="@id/bt_reminders"
+        app:layout_constraintEnd_toStartOf="@id/bt_clock"
+        tools:visibility="visible" />
+
+    <com.bald.uriah.baldphone.views.FirstPageAppIcon
+        android:id="@+id/bt_clock"
+        style="@style/HomeButtonTile.AccentOrange"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        app:__src="@drawable/clock_on_background"
+        app:__text="@string/alarms"
+        app:layout_constraintTop_toTopOf="@id/bt_reminders"
+        app:layout_constraintBottom_toBottomOf="@id/bt_reminders"
+        app:layout_constraintStart_toEndOf="@id/bt_apps"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -34,6 +34,16 @@ class HomeSettingsFragment : BaseSettingsFragment(R.layout.fragment_home_setting
             binding.btCustomPhoneSwitch.setContentVisible(isChecked)
         }
 
+        binding.btFourRowsSwitch.setChecked(Prefs.isHomeFourRows)
+        binding.btFourRowsSwitch.setOnCheckedChangeListener { isChecked ->
+            Prefs.isHomeFourRows = isChecked
+        }
+
+        binding.btAppsGridSwitch.setChecked(Prefs.isAppsGridLayout)
+        binding.btAppsGridSwitch.setOnCheckedChangeListener { isChecked ->
+            Prefs.isAppsGridLayout = isChecked
+        }
+
         // Format the input visually when focus is lost; the number is persisted on view exit.
         content.etCustomPhoneNumber.setOnFocusChangeListener { _, hasFocus ->
             if (!hasFocus) {

@@ -268,6 +268,10 @@
         <item name="android:background">@drawable/bg_tile_purple_gradient</item>
     </style>
 
+    <style name="HomeButtonTile.AccentOrange" parent="HomeButtonTile">
+        <item name="android:background">@drawable/bg_tile_orange_gradient</item>
+    </style>
+
     <style name="AboutSectionTitle">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>

@@ -68,4 +68,7 @@
     <dimen name="settings_switch_min_height">64dp</dimen>
     <dimen name="settings_switch_padding_horizontal">16dp</dimen>
     <dimen name="settings_switch_padding_vertical">12dp</dimen>
+
+    <!-- Home screen notification dot (dp, so it ignores font scaling) -->
+    <dimen name="notification_badge_size">16dp</dimen>
 </resources>

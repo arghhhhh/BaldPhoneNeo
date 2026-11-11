@@ -34,7 +34,7 @@ android {
     namespace = "app.baldphone.neo"
     compileSdk = 35
     defaultConfig {
-        applicationId = "app.baldphone.neo"
+        applicationId = "app.baldphone.neo.custom" // Fork: distinct ID so it installs alongside the official BaldPhone Neo
         minSdk = 21
         //noinspection OldTargetApi
         targetSdk = 34

@@ -49,7 +49,11 @@ import app.baldphone.neo.utils.openMessages
 import app.baldphone.neo.utils.startActivityWithNewTaskClear
 import app.baldphone.neo.utils.startComponentName
 
+import app.baldphone.neo.ui.dialogs.showRenameDialog
+
 import com.bald.uriah.baldphone.activities.SOSActivity
+import com.bald.uriah.baldphone.activities.alarms.AlarmsActivity
+import com.bald.uriah.baldphone.activities.pills.PillsActivity
 import com.bald.uriah.baldphone.utils.BaldToast
 import com.bald.uriah.baldphone.views.FirstPageAppIcon
 import com.bald.uriah.baldphone.views.home.HomeView
@@ -69,6 +73,11 @@ class HomePage1 : HomeView {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
         binding = FragmentHomePage1Binding.inflate(inflater, container, false)
         customizedIcons = ArrayMap()
+
+        val fourthRowVisibility = if (Prefs.isHomeFourRows) VISIBLE else GONE
+        binding.btReminders.visibility = fourthRowVisibility
+        binding.btApps.visibility = fourthRowVisibility
+        binding.btClock.visibility = fourthRowVisibility
 
         return binding.root
     }
@@ -184,6 +193,15 @@ class HomePage1 : HomeView {
                 homeScreen.startActivity(Intent(homeScreen, AppsActivity::class.java))
             }
         }
+        setupButton(HomeSlot.REMINDERS, binding.btReminders) {
+            homeScreen.startActivity(Intent(homeScreen, PillsActivity::class.java))
+        }
+        setupButton(HomeSlot.APPS, binding.btApps) {
+            homeScreen.startActivity(Intent(homeScreen, AppsActivity::class.java))
+        }
+        setupButton(HomeSlot.CLOCK, binding.btClock) {
+            homeScreen.startActivity(Intent(homeScreen, AlarmsActivity::class.java))
+        }
     }
 
     private fun setupButton(
@@ -211,6 +229,9 @@ class HomePage1 : HomeView {
                 btn.setImageResource(slot.iconRes)
             }
         }
+
+        // A label the user typed for this tile wins over the app / default label.
+        Prefs.getSlotLabel(slot)?.let { btn.text = it }
 
         if (homeScreen == null) {
             setupEditorClick(btn, slot, app)
@@ -256,6 +277,14 @@ class HomePage1 : HomeView {
                 }.setNegativeButton(defaultName) {
                     Prefs.setCustomApp(slot, null)
                     activity.recreate()
+                }.setNeutralButton(R.string.rename) {
+                    activity.showRenameDialog(
+                        currentLabel = bt.text,
+                        isCustomized = Prefs.getSlotLabel(slot) != null
+                    ) { newLabel ->
+                        Prefs.setSlotLabel(slot, newLabel)
+                        activity.recreate()
+                    }
                 }.show()
         }
 

@@ -22,5 +22,10 @@ enum class HomeSlot(
     LOCK_SCREEN(PrefKeys.KEY_HOME_SLOT_LOCK_SCREEN, R.string.label_lock_screen_short, R.drawable.icon_lock_outline),
     MESSAGES(PrefKeys.KEY_HOME_SLOT_MESSAGES, R.string.messages, R.drawable.message_on_background),
     RECENTS(PrefKeys.KEY_HOME_SLOT_RECENTS, R.string.recent, R.drawable.history_on_background),
-    WHATSAPP(PrefKeys.KEY_HOME_SLOT_WHATSAPP, R.string.whatsapp, R.drawable.whatsapp_on_background)
+    WHATSAPP(PrefKeys.KEY_HOME_SLOT_WHATSAPP, R.string.whatsapp, R.drawable.whatsapp_on_background),
+
+    // Optional 4th row (see Prefs.isHomeFourRows)
+    REMINDERS(PrefKeys.KEY_HOME_SLOT_REMINDERS, R.string.pills, R.drawable.pill),
+    APPS(PrefKeys.KEY_HOME_SLOT_APPS, R.string.apps, R.drawable.apps_on_background),
+    CLOCK(PrefKeys.KEY_HOME_SLOT_CLOCK, R.string.alarms, R.drawable.clock_on_background)
 }

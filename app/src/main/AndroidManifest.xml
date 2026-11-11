@@ -86,6 +86,14 @@
         <intent>
             <action android:name="android.intent.action.VOICE_COMMAND" />
         </intent>
+        <intent>
+            <action android:name="android.intent.action.VOICE_ASSIST" />
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.ASSIST" />
+        </intent>
+        <package android:name="com.google.android.apps.bard" />
+        <package android:name="com.google.android.googlequicksearchbox" />
 
         <intent>
             <action android:name="android.intent.action.VIEW" />

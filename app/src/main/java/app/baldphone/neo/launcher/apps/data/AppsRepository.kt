@@ -36,9 +36,11 @@ object AppsRepository {
      * A combined flow of all apps (DB + Predefined).
      */
     val allAppsFlow: Flow<List<AppEntry>> by lazy {
-        combine(dao.observeAll(), PredefinedApps.pinnedApps) { dbApps, _ ->
+        combine(dao.observeAll(), PredefinedApps.pinnedApps, AppLabels.labels) { dbApps, _, customLabels ->
             val predefined = PredefinedApps.getApps(applicationContext)
-            (dbApps + predefined).sortedBy { it.label.lowercase() }
+            (dbApps + predefined)
+                .map { app -> customLabels[app.componentName]?.let { app.copy(label = it) } ?: app }
+                .sortedBy { it.label.lowercase() }
         }
     }
 
@@ -64,6 +66,7 @@ object AppsRepository {
         this.appSync = AppSync(applicationContext, dao)
 
         PredefinedApps.init(applicationContext)
+        AppLabels.init(applicationContext)
 
         appScope.launch {
             allAppsFlow.collect { apps ->
