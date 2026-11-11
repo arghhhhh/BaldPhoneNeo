@@ -13,6 +13,8 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 
 import app.baldphone.neo.BuildConfig
+import app.baldphone.neo.launcher.actions.AssistantActionActivity
+import app.baldphone.neo.launcher.actions.LockScreenActionActivity
 import app.baldphone.neo.R
 import app.baldphone.neo.activities.DialerActivity
 import app.baldphone.neo.features.calls.ui.RecentCallsActivity
@@ -53,7 +55,9 @@ object PredefinedApps {
     private data class AppInfo(
         val className: String,
         @DrawableRes val iconResId: Int,
-        @StringRes val labelResId: Int
+        @StringRes val labelResId: Int,
+        /** Only offered when picking an app for a home screen button, never in the Apps list. */
+        val chooseOnly: Boolean = false
     )
 
     private val APPS =
@@ -66,7 +70,20 @@ object PredefinedApps {
             AppInfo(PillsActivity::class.java.name, R.drawable.pill, R.string.pills),
             AppInfo(RecentCallsActivity::class.java.name, R.drawable.history_on_background, R.string.recent),
             AppInfo(SOSActivity::class.java.name, R.drawable.emergency, R.string.sos),
-            AppInfo(VIDEOS_ALIAS_CLASS, R.drawable.movie_on_background, R.string.videos)
+            AppInfo(VIDEOS_ALIAS_CLASS, R.drawable.movie_on_background, R.string.videos),
+            // Fork: built-in actions, assignable to any home button
+            AppInfo(
+                AssistantActionActivity::class.java.name,
+                R.drawable.voice_on_background,
+                R.string.assistant,
+                chooseOnly = true
+            ),
+            AppInfo(
+                LockScreenActionActivity::class.java.name,
+                R.drawable.icon_lock_outline,
+                R.string.label_lock_screen_short,
+                chooseOnly = true
+            )
         )
 
     /** Keyed by the flattened string format "package/class" for fast lookup. */
@@ -103,6 +120,10 @@ object PredefinedApps {
 
     fun isPredefined(componentName: String): Boolean =
         APPS_MAP.containsKey(componentName)
+
+    /** True for entries that should only be listed when choosing an app for a home button. */
+    fun isChooseOnly(componentName: String): Boolean =
+        APPS_MAP[componentName]?.chooseOnly == true
 
     fun isAppsActivity(componentName: String): Boolean =
         APPS_MAP[componentName]?.className == AppsActivity::class.java.name

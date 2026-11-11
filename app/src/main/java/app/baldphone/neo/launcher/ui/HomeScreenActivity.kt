@@ -58,6 +58,14 @@ class HomeScreenActivity : BaseActivity() {
     private var viewPagerHolder: ViewPagerHolder? = null
     private var updatePagerJob: Job? = null
 
+    /**
+     * A Home-button reset that hasn't been applied yet. Kept outside the job because a later
+     * refresh (e.g. the pinned-apps flow re-emitting when the activity restarts) cancels the
+     * pending job; without this the first Home press after leaving another screen could
+     * leave the user on a side page.
+     */
+    private var pendingResetToHome = false
+
     private val speechRecognizerLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == RESULT_OK) {
@@ -253,6 +261,7 @@ class HomeScreenActivity : BaseActivity() {
      */
     private fun updateViewPager(animate: Boolean, resetToHome: Boolean) {
         val adapter = baldPagerAdapter ?: return
+        if (resetToHome) pendingResetToHome = true
 
         // Load off the UI thread; apply on the UI thread.
         updatePagerJob?.cancel()
@@ -267,7 +276,8 @@ class HomeScreenActivity : BaseActivity() {
                 val holder = viewPagerHolder ?: return@launch
 
                 adapter.obtainAppList(list)
-                if (resetToHome) {
+                if (pendingResetToHome) {
+                    pendingResetToHome = false
                     holder.viewPager.setCurrentItem(adapter.startingPage, animate)
                 }
                 holder.onDataChanged()

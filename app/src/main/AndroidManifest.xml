@@ -218,6 +218,26 @@
                 android:name="media_mode"
                 android:value="2" />
         </activity-alias>
+
+        <!-- Fork: invisible action activities so Assistant / Lock Screen can be assigned to any
+             home button (see launcher/actions/HomeActions.kt). Own taskAffinity because custom
+             home buttons launch with FLAG_ACTIVITY_CLEAR_TASK. -->
+        <activity
+            android:name=".launcher.actions.AssistantActionActivity"
+            android:excludeFromRecents="true"
+            android:exported="false"
+            android:label="@string/assistant"
+            android:noHistory="true"
+            android:taskAffinity="${applicationId}.actions"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity
+            android:name=".launcher.actions.LockScreenActionActivity"
+            android:excludeFromRecents="true"
+            android:exported="false"
+            android:label="@string/label_lock_screen_short"
+            android:noHistory="true"
+            android:taskAffinity="${applicationId}.actions"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity
             android:name=".features.contacts.ui.AddContactActivity"
             android:exported="false"

@@ -37,8 +37,11 @@ class AppsViewModel : ViewModel() {
             apps
                 .asSequence()
                 .filter { app ->
-                    // If in choose mode, show everything. Otherwise, hide predefined/internal apps.
-                    chooseMode || !PredefinedApps.isAppsActivity(app.componentName)
+                    // If in choose mode, show everything (including built-in actions such as
+                    // Assistant / Lock Screen). Otherwise hide the Apps screen itself and actions.
+                    chooseMode ||
+                        !(PredefinedApps.isAppsActivity(app.componentName) ||
+                            PredefinedApps.isChooseOnly(app.componentName))
                 }
 //                .sortedBy { it.label.lowercase() } // Explicitly ensure sorting
                 .toList()
