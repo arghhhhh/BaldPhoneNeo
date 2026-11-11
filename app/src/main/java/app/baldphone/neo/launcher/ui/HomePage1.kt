@@ -119,11 +119,13 @@ class HomePage1 : HomeView {
                             val areaView = binding.notificationArea.root
                             val itemView = binding.notificationOverlay
 
-                            val showOverlay = item != null
+                            // Setting is re-read on each emission; collection restarts when
+                            // returning to the home screen, so a change applies right away.
+                            val showOverlay = item != null && Prefs.isHomeNotificationOverlayEnabled
                             areaView.visibility = if (showOverlay) GONE else VISIBLE
                             itemView.visibility = if (showOverlay) VISIBLE else GONE
 
-                            if (item != null) {
+                            if (showOverlay && item != null) {
                                 itemView.bind(item, { notificationItem ->
                                     notificationItem.contentIntent?.sendNotificationIntent(null)
                                 }, { notificationItem ->

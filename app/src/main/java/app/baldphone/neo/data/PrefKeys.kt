@@ -63,6 +63,7 @@ object PrefKeys {
     // Home screen layout
     const val KEY_HOME_FOUR_ROWS = "pref_home_four_rows"
     const val KEY_APPS_GRID_LAYOUT = "pref_apps_grid_layout"
+    const val KEY_HOME_NOTIFICATION_OVERLAY = "pref_home_notification_overlay"
 
     /** Prefix for per-tile label overrides on the main home page, followed by the slot key. */
     const val KEY_HOME_SLOT_LABEL_PREFIX = "home_slot_label_"

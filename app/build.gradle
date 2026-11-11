@@ -76,6 +76,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         debug {
+            // Fork: sign debug builds with the release key too (when present), so debug and
+            // release builds can be installed over each other without uninstalling.
+            if (keystorePropertiesFile.exists()) {
+                signingConfig = signingConfigs.release
+            }
             debuggable true
             minifyEnabled false
             versionNameSuffix "-debug." + getDate()

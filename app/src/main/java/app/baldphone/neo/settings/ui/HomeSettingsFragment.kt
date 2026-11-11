@@ -44,6 +44,11 @@ class HomeSettingsFragment : BaseSettingsFragment(R.layout.fragment_home_setting
             Prefs.isAppsGridLayout = isChecked
         }
 
+        binding.btNotificationOverlaySwitch.setChecked(Prefs.isHomeNotificationOverlayEnabled)
+        binding.btNotificationOverlaySwitch.setOnCheckedChangeListener { isChecked ->
+            Prefs.isHomeNotificationOverlayEnabled = isChecked
+        }
+
         // Format the input visually when focus is lost; the number is persisted on view exit.
         content.etCustomPhoneNumber.setOnFocusChangeListener { _, hasFocus ->
             if (!hasFocus) {

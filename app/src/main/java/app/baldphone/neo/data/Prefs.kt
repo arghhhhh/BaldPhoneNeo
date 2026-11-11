@@ -233,6 +233,13 @@ object Prefs {
     var isAppsGridLayout: Boolean by booleanPref(PrefKeys.KEY_APPS_GRID_LAYOUT, true)
 
     /**
+     * Whether the newest notification is shown on the main home page in place of the clock.
+     * When off, the clock is always shown (notifications stay reachable via the bell button).
+     */
+    @JvmStatic
+    var isHomeNotificationOverlayEnabled: Boolean by booleanPref(PrefKeys.KEY_HOME_NOTIFICATION_OVERLAY, true)
+
+    /**
      * Controls whether the notes page is visible on the home screen.
      */
     @JvmStatic

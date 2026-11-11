@@ -37,6 +37,15 @@
         app:switchDescriptionOn="@string/settings_apps_grid_desc_on"
         app:switchTitle="@string/settings_apps_grid_title" />
 
+    <app.baldphone.neo.settings.views.SettingsSwitchButtonView
+        android:id="@+id/bt_notification_overlay_switch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:switchDescriptionOff="@string/settings_home_notification_overlay_desc_off"
+        app:switchDescriptionOn="@string/settings_home_notification_overlay_desc_on"
+        app:switchTitle="@string/settings_home_notification_overlay_title" />
+
 </LinearLayout>
 
 </ScrollView>

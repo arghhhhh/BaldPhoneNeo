@@ -13,6 +13,9 @@
     <string name="settings_apps_grid_title">Show apps as a grid</string>
     <string name="settings_apps_grid_desc_on">The Apps screen shows large icons in a grid.</string>
     <string name="settings_apps_grid_desc_off">The Apps screen shows a list.</string>
+    <string name="settings_home_notification_overlay_title">Show notifications over the clock</string>
+    <string name="settings_home_notification_overlay_desc_on">The newest notification replaces the clock on the main page.</string>
+    <string name="settings_home_notification_overlay_desc_off">The clock is always shown. Notifications are under the bell button.</string>
 
     <!-- Accessibility service description (fork adds Gemini Live auto-start) -->
     <string name="accessibility_service_description_fork">Lets the Lock Screen button lock the phone with one tap, and lets the Assistant button start a Gemini Live voice chat directly. It only looks at the Google app, and only right after you press Assistant.</string>
