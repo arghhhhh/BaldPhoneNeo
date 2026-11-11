@@ -36,12 +36,19 @@
         tools:visibility="visible" />
 
     <!-- App Label -->
+    <!-- Fixed share of the tile (layout_constraintHeight_percent) with auto-sized text:
+         with a large system font the label shrinks to fit instead of squeezing the icon. -->
     <TextView
         android:id="@+id/tv_app_label"
         style="@style/BackgroundText.Medium.Plus"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:autoSizeMaxTextSize="@dimen/medium_plus"
+        android:autoSizeMinTextSize="10sp"
+        android:autoSizeStepGranularity="1sp"
+        android:autoSizeTextType="uniform"
         android:ellipsize="end"
+        app:layout_constraintHeight_percent="0.38"
         android:fontFamily="sans-serif-condensed"
         android:gravity="center"
         android:maxLines="1"
