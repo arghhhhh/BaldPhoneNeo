@@ -11,7 +11,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:contentDescription="@null"
-        android:padding="10dp"
+        android:padding="4dp"
         android:scaleType="fitCenter"
         app:layout_constraintBottom_toTopOf="@+id/tv_app_label"
         app:layout_constraintDimensionRatio="1"
