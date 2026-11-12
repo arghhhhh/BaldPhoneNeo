@@ -156,7 +156,8 @@ public abstract class BaldKeyboard extends FrameLayout {
             tv_enter.setText(R.string.enter);
             iv_enter.setImageResource(R.drawable.enter_on_keyboard);
         }
-
+        // Fork: the text label is hidden (icon only), so expose the action name to screen readers.
+        enter.setContentDescription(tv_enter.getText());
     }
 
     //    protected abstract View

@@ -27,6 +27,7 @@ import android.widget.TextView;
 
 import app.baldphone.neo.R;
 import com.bald.uriah.baldphone.utils.BaldToast;
+import com.bald.uriah.baldphone.keyboard.BaldInputMethodService;
 import com.bald.uriah.baldphone.views.BaldButton;
 
 import java.util.List;
@@ -89,7 +90,12 @@ public class TutorialFragment3 extends TutorialFragment {
         final List<InputMethodInfo> inputMethodInfoList = im.getEnabledInputMethodList();
         boolean turnedOn = false;
         for (InputMethodInfo inputMethodInfo : inputMethodInfoList) {
-            if (inputMethodInfo.getId().equals("com.bald.uriah.baldphone/.keyboard.BaldInputMethodService")) {
+            // Fork: match this app's own keyboard. The old hard-coded id
+            // ("com.bald.uriah.baldphone/.keyboard.BaldInputMethodService") is the ORIGINAL
+            // BaldPhone app's keyboard, so it reported "already set" whenever that app's keyboard
+            // was enabled, even though this app's keyboard wasn't.
+            if (inputMethodInfo.getPackageName().equals(getContext().getPackageName())
+                    && inputMethodInfo.getServiceName().equals(BaldInputMethodService.class.getName())) {
                 turnedOn = true;
                 break;
             }
