@@ -80,13 +80,16 @@ object NotificationRepository {
     }
 
     /**
-     * Returns a flow of all active package names, excluding the current app.
+     * Returns a flow of package names that should show a notification dot on the home screen,
+     * excluding the current app. Persistent notifications (media players, ongoing services,
+     * progress) are ignored - see [NotificationClassifier.countsForBadge].
      */
     val activeNotificationPackages: Flow<Set<String>> =
         notifications
             .map { list ->
                 list
                     .asSequence()
+                    .filter { sbn -> NotificationClassifier.countsForBadge(sbn) }
                     .map { sbn -> sbn.packageName }
                     .filter { it != BuildConfig.APPLICATION_ID }
                     .toSet()

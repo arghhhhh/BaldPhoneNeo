@@ -95,6 +95,31 @@ object NotificationClassifier {
     /**
      * Determines whether a notification should be included in the repository.
      */
+    /** Categories that describe something ongoing rather than something to look at. */
+    private val NON_ALERT_CATEGORIES =
+        setOf(
+            Notification.CATEGORY_TRANSPORT, // media player controls (e.g. Poweramp, Spotify)
+            Notification.CATEGORY_SERVICE,
+            Notification.CATEGORY_PROGRESS,
+            Notification.CATEGORY_SYSTEM,
+            Notification.CATEGORY_NAVIGATION,
+            Notification.CATEGORY_STOPWATCH,
+            Notification.CATEGORY_LOCATION_SHARING,
+            Notification.CATEGORY_WORKOUT
+        )
+
+    /**
+     * Whether a notification should put a red dot on its app's home screen button.
+     * Only dismissable, alert-type notifications count: a media player's controls or a
+     * running service would otherwise keep the dot on forever.
+     */
+    fun countsForBadge(sbn: StatusBarNotification): Boolean {
+        if (!sbn.isClearable) return false
+        val n = sbn.notification
+        if ((n.flags and (Notification.FLAG_ONGOING_EVENT or Notification.FLAG_FOREGROUND_SERVICE)) != 0) return false
+        return n.category !in NON_ALERT_CATEGORIES
+    }
+
     fun shouldShow(sbn: StatusBarNotification): Boolean {
         val notification = sbn.notification ?: return false
 
