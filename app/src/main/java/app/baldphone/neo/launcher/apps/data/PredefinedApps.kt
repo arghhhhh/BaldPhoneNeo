@@ -68,8 +68,8 @@ object PredefinedApps {
             AppInfo(DialerActivity::class.java.name, R.drawable.phone_on_background, R.string.dialer),
             AppInfo(MediaActivity::class.java.name, R.drawable.photo_on_background, R.string.photos),
             AppInfo(PillsActivity::class.java.name, R.drawable.pill, R.string.pills),
-            AppInfo(RecentCallsActivity::class.java.name, R.drawable.history_on_background, R.string.recent),
-            AppInfo(SOSActivity::class.java.name, R.drawable.emergency, R.string.sos),
+            AppInfo(RecentCallsActivity::class.java.name, R.drawable.history_on_background, R.string.recent, chooseOnly = true),
+            AppInfo(SOSActivity::class.java.name, R.drawable.emergency, R.string.sos, chooseOnly = true),
             AppInfo(VIDEOS_ALIAS_CLASS, R.drawable.movie_on_background, R.string.videos),
             // Fork: built-in actions, assignable to any home button
             AppInfo(
